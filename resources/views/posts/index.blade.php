@@ -20,7 +20,7 @@
                         <img src="images\{{$post->img}}" class="card-img-top" style="width: 100%; height:100%; object-fit:cover;">
                         <div class="card-body">
                           <h5 class="card-title">{{$post->title}}</h5>
-                          <p class="card-text">{{$post->description}}<br>category:{{$post->Category->name}}</p>
+                          <p class="card-text">category:{{$post->Category->name}}</p>
 
                           <a href="{{route('posts.show',$post->id)}}" class="btn btn-primary">View</a>
                         </div>
