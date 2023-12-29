@@ -12,6 +12,7 @@ class TagController extends Controller
      */
     public function index()
     {
+        
         $tags=Tag::all();
         return view('tags.index',compact('tags'));
     }
@@ -21,7 +22,11 @@ class TagController extends Controller
      */
     public function create()
     {
+        if(auth()->user()->isAdmin===1){
         return view('tags.create');
+        }else{
+            return redirect()->back();
+        }
     }
 
     /**
@@ -47,8 +52,12 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
+        if(auth()->user()->isAdmin===1){
         return view('tags.edit',compact('tag'));
+    }else{
+        return redirect()->back();
     }
+}
 
     /**
      * Update the specified resource in storage.
@@ -65,7 +74,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
+        if(auth()->user()->isAdmin===1){
         $tag->delete();
         return redirect()->route('tags.index');
-    }
+    }}
 }

@@ -20,9 +20,12 @@ class CategoryController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    { if(auth()->user()->isAdmin===1){
         return view('category.create');
+    }else{
+        return redirect()->back();
     }
+}
 
     /**
      * Store a newly created resource in storage.
@@ -52,8 +55,12 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        if(auth()->user()->isAdmin===1){
         return  view('category.edit',compact('category'));
+    }else{
+        return redirect()->back();
     }
+}
 
     /**
      * Update the specified resource in storage.
@@ -75,7 +82,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if(auth()->user()->isAdmin===1){
         $category->delete();
         return  redirect()->route('category.index');
-    }
+    }}
 }
