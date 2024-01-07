@@ -47,7 +47,7 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            if(auth()->user()->ban===0){
+            if(auth()->user()->ban===0 && auth()->user()->isAdmin===1){
             $request->session()->regenerate();
             return redirect()->route('posts.index');
         }else{
