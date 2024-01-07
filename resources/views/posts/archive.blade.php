@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,39 +12,42 @@
     </header>
     <main>
         @section('content')
-        <h1>Categories:</h1>
+        <h1>Posts archive:</h1>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th scope="col">id</th>
-                    <th scope="col">name</th>
+                    <th scope="col">user</th>
+                    <th scope="col">title</th>
                     <th scope="col">delete</th>
-                    <th scope="col">update</th>
-                    <th scope="col">show</th>
+                    <th scope="col">restore</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($category as $cat)
+                @foreach ($posts as $post)
                 <tr>
                     <td>
-                        {{$cat->id}}
+                        {{$post->id}}
                     </td>
                     <td>
-                        {{$cat->name}}
+                        {{$post->User->name}}
                     </td>
                     <td>
-                      <form method="POST" action="{{route('category.destroy',$cat->id)}}">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger">delete</button>
-
-                      </form>
+                        {{$post->title}}
                     </td>
                     <td>
-                      <a href="{{route('category.edit',$cat->id)}}" class="btn btn-danger">update</a>
+                        <form method="post" action="{{route('posts.destroy',$post->id)}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"> delete</button>
+                        </form>
                     </td>
                     <td>
-                      <a href="{{route('category.show',$cat->id)}}" class="btn btn-danger">show</a>
+                        <form method="POST" action="{{route('posts.restore',$post->id)}}">
+                            @csrf
+                            @method('put')
+                            <button type="submit" class="btn btn-light">restore</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

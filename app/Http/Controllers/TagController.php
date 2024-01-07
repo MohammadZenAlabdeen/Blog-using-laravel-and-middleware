@@ -12,7 +12,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        
+        $this->authorize('viewAny',Tag::class);
         $tags=Tag::all();
         return view('tags.index',compact('tags'));
     }
@@ -22,11 +22,8 @@ class TagController extends Controller
      */
     public function create()
     {
-        if(auth()->user()->isAdmin===1){
+        $this->authorize('create',Tag::class);
         return view('tags.create');
-        }else{
-            return redirect()->back();
-        }
     }
 
     /**
@@ -52,11 +49,8 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        if(auth()->user()->isAdmin===1){
+        $this->authorize('update',$tag);
         return view('tags.edit',compact('tag'));
-    }else{
-        return redirect()->back();
-    }
 }
 
     /**
@@ -74,6 +68,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
+        $this->authorize('delete',$tag);
         if(auth()->user()->isAdmin===1){
         $tag->delete();
         return redirect()->route('tags.index');

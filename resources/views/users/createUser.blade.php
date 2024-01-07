@@ -22,7 +22,7 @@
               <div class="card-body p-5 text-center">
     
                 <div class="mb-md-5 mt-md-4 pb-5">
-                <form method="POST" action="{{route('user.store')}}" enctype="multipart/form-data">
+                <form method="POST" action="{{route('user.register')}}" enctype="multipart/form-data">
                     @csrf
                     <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
                     <p class="text-white-50 mb-5">Please enter your data</p>
@@ -52,12 +52,6 @@
                 </form>
                   
                 </div>
-    
-                <div>
-                  <p class="mb-0">already have an account> <a href="{{route('user.showlogin')}}" class="text-white-50 fw-bold">Sign in</a>
-                  </p>
-                </div>
-    
               </div>
             </div>
           </div>

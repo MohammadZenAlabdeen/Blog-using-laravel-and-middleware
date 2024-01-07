@@ -17,16 +17,14 @@
                 <img src="{{ URL::to('/') }}/images/{{$post->img}}" class="card-img-top" style="width: 100%; height:30rem; object-fit:cover;">
             </div>
             <div class="g-col-12">
-                @if (auth()->user()->id===$post->user_id||auth()->user()->isAdmin===1)
-                <form action="{{route('posts.destroy',$post->id)}}" method="POST">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger">delete</button>
-                </form>
-                @endif
-                @if (auth()->user()->id===$post->user_id)
-                <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary">update</a>
-                @endif
+              <form action="{{route('posts.archive',$post)}}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger">archive</button>
+            </form>
+{{--                 @if (auth()->user()->isAdmin==1)
+                <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary">Archive</a>
+                @endif --}}
 
                 <p class="h1">{{$post->title}} category:{{$post->Category->name}}<br></p>
                 <p class="h2">{{$post->description}}<br></p>
@@ -51,10 +49,7 @@
                                       <h6 class="fw-bold text-primary mb-1">{{$comment->User->name}}</h6>
                                     </div>
                                     <div>
-                                        @if ($comment->User->id===auth()->User()->id)
-                                        <a type="button" class="btn btn-info" href="{{route('comment.edit',$comment->id)}}">update</a>
-                                        @endif
-                                        @if ($comment->User->id===auth()->User()->id||$post->user_id===auth()->user()||auth()->user()->isAdmin===1)
+                                        @if (auth()->user()->isAdmin===1)
                                         <form method="POST" action="{{route('comment.destroy',$comment->id)}}">
                                             @method('delete')
                                             @csrf
@@ -74,26 +69,7 @@
                         </div>
                       </section>
                     @endforeach
-            </div>
-            <form method="POST" action="{{route('comment.store',$post->id)}}">
-                @csrf
-                <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                    <div class="d-flex flex-start w-100">
-                      <img class="rounded-circle shadow-1-strong me-3"
-                        src="{{ URL::to('/') }}/images/{{auth()->User()->img}}" alt="avatar" width="40"
-                        height="40" />
-                      <div class="form-outline w-100">
-                        <textarea class="form-control" id="textAreaExample" rows="4"
-                          style="background: #fff;" name="content"></textarea>
-                        <label class="form-label" for="textAreaExample">Message</label>
-                      </div>
-                    </div>
-                    <div class="float-end mt-2 pt-1">
-                      <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
-                    </div>
-                </div>
-            </form>
-      
+            </div>      
     </div>
         @endsection
     </main>

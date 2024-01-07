@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,24 +13,44 @@
     </header>
     <main>
         @section('content')
-        <div class="container text-center">
-            <div class="row">
+        <h1>Posts:</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">user</th>
+                    <th scope="col">title</th>
+                    <th scope="col">archive</th>
+                    <th scope="col">show</th>
+
+                </tr>
+              </thead>
+              <tbody>
                 @foreach ($posts as $post)
-                <div class="col">
-                    <div class="card" style="width: 18rem; height:18rem;">
-                        <img src="images\{{$post->img}}" class="card-img-top" style="width: 100%; height:100%; object-fit:cover;">
-                        <div class="card-body">
-                          <h5 class="card-title">{{$post->title}}</h5>
-                          <p class="card-text">category:{{$post->Category->name}}</p>
-
-                          <a href="{{route('posts.show',$post->id)}}" class="btn btn-primary">View</a>
-                        </div>
-                      </div>
-                    </div>
+                <tr>
+                    <td>
+                        {{$post->id}}
+                    </td>
+                    <td>
+                        {{$post->User->name}}
+                    </td>
+                    <td>
+                        {{$post->title}}
+                    </td>
+                    <td>
+                        <form method="post" action="{{route('posts.archive',$post->id)}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"> archive</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{route('posts.show',$post)}}" class="btn btn-info">show</a>
+                    </td>
+                </tr>
                 @endforeach
-            </div>
-          </div>
-
+            </tbody>
+            </table>
         @endsection
     </main>
     

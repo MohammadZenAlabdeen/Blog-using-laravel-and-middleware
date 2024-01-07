@@ -12,6 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny',Category::class);
         $category=Category::all();
         return view('category.index',compact('category'));
     }
@@ -20,11 +21,10 @@ class CategoryController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    { if(auth()->user()->isAdmin===1){
+    { 
+        $this->authorize('create',Category::class);
         return view('category.create');
-    }else{
-        return redirect()->back();
-    }
+
 }
 
     /**
@@ -47,6 +47,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $this->authorize('view',$category);
+
         return view('category.view',compact('category'));
     }
 
@@ -55,11 +57,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        if(auth()->user()->isAdmin===1){
+        $this->authorize('update',$category);
+
+
         return  view('category.edit',compact('category'));
-    }else{
-        return redirect()->back();
-    }
 }
 
     /**
@@ -82,8 +83,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if(auth()->user()->isAdmin===1){
+        $this->authorize('delete',$category);
+
+
         $category->delete();
         return  redirect()->route('category.index');
-    }}
+    }
 }

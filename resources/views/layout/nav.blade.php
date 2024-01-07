@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{{asset('style.css')}}"  rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Document</title>
 </head>
@@ -11,67 +12,106 @@
     @section('navbar')
     @show
     
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          @if (auth()->check())
-          <a class="navbar-brand" href="{{route('posts.index')}}">Task03</a>
-          @else
-          <a class="navbar-brand" href="{{route('user.showlogin')}}">Task03</a>
-          @endif
+      <div class="wrapper">
+        @if (auth()->check())
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Blog Dashboard</h3>
+            </div>
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-
-            @if (auth()->check())
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{route('posts.index')}}">Home</a>
-            </li>
-            <form method="post" action="{{route('logout')}}">
-              @method('post')
-              @csrf
-              <li class="nav-item">
-                <button class="nav-link" type="submit">Log out</button>
-              </li>
-            </form>
-            <li class="nav-item">
-              <a href="{{route('category.index')}}" class="nav-link" type="submit">categories</a>
-            </li>
-            <li class="nav-item">
-              <a href="{{route('tags.index')}}" class="nav-link" type="submit">tags</a>
-            </li>
-            <li class="nav-item" style="width: 50px; height:50px;border:none;border-radius:50%;">
-              <img src="/images/{{auth()->user()->img}}" style="width:100%;height:100%; border-radius:50%;">
-            </li>
-            <li class="nav-item" style="display: flex; justify-content:center;align-items:center; text-align:center; margin-left:15px;">
-              <span>{{auth()->user()->name}}</span>
-            </li>
-            <li class="nav-item">
-                  <a href="{{route('posts.create')}}" class="nav-link active" aria-current="page">Create a post</a>
-            </li>
-            @if (auth()->user()->isAdmin===1)
-            <li class="nav-item">
-              <a href="{{route('tags.create')}}" class="nav-link active" aria-current="page">Create a tag</a>
-        </li>
-            <li class="nav-item">
-              <a href="{{route('category.create')}}" class="nav-link active" aria-current="page">Create a category</a>
-        </li>
-            @endif
-
-
-              
-            @endif
-              
-            
-
+            <ul class="list-unstyled components">
+              @if (auth()->check())
+              <a class="navbar-brand" href="{{route('posts.index')}}">Task04</a>
+              @else
+              <a class="navbar-brand" href="{{route('user.showlogin')}}">Task04</a>
+              @endif
+              @if (auth()->check())
+                <li class="active">
+                    <ul class="list-unstyled" id="homeSubmenu">
+                      <li class="nav-item">
+                        <a href="{{route('category.index')}}" class="nav-link" type="submit">categories</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('users.showAll')}}" class="nav-link" type="submit">users</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{route('posts.index')}}">posts</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('tags.index')}}" class="nav-link" type="submit">tags</a>
+                      </li>
+                      @if (auth()->user()->isAdmin===1)
+                      <li class="nav-item">
+                        <a href="{{route('users.trash')}}" class="nav-link" type="submit">user trash</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('posts.showArchive')}}" class="nav-link" type="submit">posts archive</a>
+                      </li>
+                      @endif
+                    </ul>
+                </li>
+                <li>
+                    <ul class="list-unstyled" id="pageSubmenu">
+                      @if (auth()->user()->isAdmin===1)
+                      <li class="nav-item">
+                        <a href="{{route('tags.create')}}" class="nav-link active" aria-current="page">Create a tag</a>
+                  </li>
+                      <li class="nav-item">
+                        <a href="{{route('category.create')}}" class="nav-link active" aria-current="page">Create a category</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('user.showregister')}}" class="nav-link" type="submit">create a user</a>
+                  </li>
+                  @endif
+                    </ul>
+                </li>
             </ul>
-          </div>
-        </div>
-      </nav>
+
+            <ul class="list-unstyled CTAs">
+              <form method="post" action="{{route('logout')}}">
+                @method('post')
+                @csrf
+                <li class="nav-item">
+                  <button class="nav-link" type="submit">Log out</button>
+                </li>
+  
+              </form>
+            </ul>
+            @endif
+
+        </nav>
+        @endif
+        <!-- Page Content  -->
+        <div id="content">
+@if (auth()->check())
+  
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                          @if (auth()->check())
+                          <a class="navbar-brand" href="{{route('posts.index')}}">Task04</a>
+                          @else
+                          <a class="navbar-brand" href="{{route('user.showlogin')}}">Task04</a>
+                          @endif
+                          <li class="nav-item">
+                            <span class="nav-link">
+                              {{auth()->user()->name}}
+                            </span>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            @endif
 
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{{asset('side.js')}}"></script>
 </body>
 </html>

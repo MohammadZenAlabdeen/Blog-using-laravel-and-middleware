@@ -6,20 +6,30 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use lluminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Policies\PostPolicy;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         $this->authorize('viewAny',Post::class);
         $posts=Post::all();
         return view('posts.index',compact('posts'));
+    }
+    public function showArchive()
+    {
+        $this->authorize('viewAny',Post::class);
+        $posts=Post::onlyTrashed()->get();
+        return view('posts.archive',compact('posts'));
     }
 
     /**
@@ -111,10 +121,24 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function archive(Post $post)
     {
         $this->authorize('delete',$post);
         $post->delete();
         return redirect()->route('posts.index');
     }
+    public function destroy($id)
+    { 
+        if(auth()->user()->isAdmin===1){
+        Post::onlyTrashed()->find($id)->forceDelete();
+        return redirect()->route('posts.index');
+    }
+}
+    public function restore($id)
+    { 
+        if(auth()->user()->isAdmin===1){
+        Post::onlyTrashed()->find($id)->restore();
+        return redirect()->route('posts.index');
+        }
+}
 }

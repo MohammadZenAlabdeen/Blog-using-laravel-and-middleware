@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,36 +13,43 @@
     </header>
     <main>
         @section('content')
-        <h1>Tags:</h1>
+        <h1>Deleted Users:</h1>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th scope="col">id</th>
                     <th scope="col">name</th>
+                    @if (auth()->user()->isAdmin===1)
                     <th scope="col">delete</th>
-                    <th scope="col">update</th>
+                    <th scope="col">restore</th>
+                    @endif
                 </tr>
               </thead>
               <tbody>
-                @foreach ($tags as $tag)
+                @foreach ($users as $user)
                 <tr>
                     <td>
-                        {{$tag->id}}
+                        {{$user->id}}
                     </td>
                     <td>
-                        {{$tag->name}}
+                        {{$user->name}}
                     </td>
+                    @if(auth()->user()->isAdmin===1)
                     <td>
-                      <form method="POST" action="{{route('tags.destroy',$tag->id)}}">
+                      <form action="{{route('users.destroy',$user->id)}}" method="post">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn btn-danger">delete</button>
-
-                      </form>
+                        <button type="submit" class="btn btn-danger">force delete</button>
+                    </form>
                     </td>
                     <td>
-                      <a href="{{route('tags.edit',$tag->id)}}" class="btn btn-danger">update</a>
+                      <form action="{{route('users.restore',$user->id)}}" method="post">
+                        @csrf
+                        @method('put')
+                        <button type="submit" class="btn btn-danger">restore</button>
+                    </form>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
